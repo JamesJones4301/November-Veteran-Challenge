@@ -29,7 +29,7 @@ const PUSH_GOAL=2400,SIT_GOAL=2000,MILE_GOAL=100,DAYS=30;
 const RAISED_AMOUNT=100,FUNDRAISING_GOAL=3000;
 let entries=[];
 const $=id=>document.getElementById(id);
-$("entryDate").value="2026-11-01";
+const todayForEntry=new Date();$("entryDate").value=[todayForEntry.getFullYear(),String(todayForEntry.getMonth()+1).padStart(2,"0"),String(todayForEntry.getDate()).padStart(2,"0")].join("-");
 function fmt(d){const value=String(d||"");const datePart=value.slice(0,10);let date;if(datePart.length===10&&datePart[4]==="-"&&datePart[7]==="-")date=new Date(Number(datePart.slice(0,4)),Number(datePart.slice(5,7))-1,Number(datePart.slice(8,10)),12);else{const parsed=new Date(value);date=Number.isNaN(parsed.getTime())?null:new Date(parsed.getUTCFullYear(),parsed.getUTCMonth(),parsed.getUTCDate(),12)}return date?date.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"Date unavailable"}
 function updateFundraising(){const raised=Math.max(Number(RAISED_AMOUNT)||0,0),goal=FUNDRAISING_GOAL,percent=goal?raised/goal*100:0,remaining=Math.max(goal-raised,0);$("fundraisingRaised").textContent="$"+raised.toLocaleString()+" raised";$("fundraisingPercent").textContent=percent.toFixed(1)+"%";$("fundraisingRemaining").textContent=remaining?"$"+remaining.toLocaleString()+" to go":"Goal reached";$("fundraisingFill").style.width=Math.min(percent,100)+"%";document.querySelector(".fundraising-track").setAttribute("aria-valuenow",String(Math.min(raised,goal)));document.querySelector(".fundraising-track").setAttribute("aria-valuemax",String(goal))}
 function say(t){$("message").textContent=t;clearTimeout(say.timer);say.timer=setTimeout(()=>$("message").textContent="",3200)}
